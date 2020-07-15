@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Ingreso;
 use App\DetalleIngreso;
+use App\Notifications\NotifyAdmin;
 
 class IngresoController extends Controller
 {
@@ -47,7 +48,8 @@ class IngresoController extends Controller
         ];
     }
 
-    public function listarPdf(){
+    public function listarPdf()
+    {
         $ingresos = Ingreso::join('personas','ingresos.idproveedor','=','personas.id')
             ->join('users','ingresos.idusuario','=','users.id')
             ->select('ingresos.id','ingresos.tipo_comprobante','ingresos.serie_comprobante',
@@ -60,7 +62,8 @@ class IngresoController extends Controller
         return $pdf->download('ingresos.pdf');
     }
 
-    public function pdf(Request $request,$id){
+    public function pdf(Request $request,$id)
+    {
         $ingreso = Ingreso::join('personas','ingresos.idproveedor','=','personas.id')
         ->join('users','ingresos.idusuario','=','users.id')
         ->select('ingresos.id','ingresos.tipo_comprobante','ingresos.serie_comprobante',
@@ -83,7 +86,8 @@ class IngresoController extends Controller
         return $pdf->download('ingreso-'.$numingreso[0]->num_comprobante.'.pdf');
     }
 
-    public function obtenerCabecera(Request $request){
+    public function obtenerCabecera(Request $request)
+    {
         if (!$request->ajax()) return redirect('/');
 
         $id = $request->id;
@@ -98,7 +102,8 @@ class IngresoController extends Controller
         return ['ingreso' => $ingreso];
     }
 
-    public function obtenerDetalles(Request $request){
+    public function obtenerDetalles(Request $request)
+    {
         if (!$request->ajax()) return redirect('/');
 
         $id = $request->id;
@@ -141,6 +146,26 @@ class IngresoController extends Controller
                 $detalle->cantidad = $det['cantidad'];
                 $detalle->precio = $det['precio'];
                 $detalle->save();
+            }
+
+            $fechaActual= date('Y-m-d');
+            $numVentas = DB::table('ventas')->whereDate('created_at', $fechaActual)->count();
+            $numIngresos = DB::table('ingresos')->whereDate('created_at',$fechaActual)->count();
+
+            $arregloDatos = [
+            'ventas' => [
+                        'numero' => $numVentas,
+                        'msj' => 'Ventas'
+                    ],
+            'ingresos' => [
+                        'numero' => $numIngresos,
+                        'msj' => 'Ingresos'
+                    ]
+            ];
+            $allUsers = User::all();
+
+            foreach ($allUsers as $notificar) {
+                User::findOrFail($notificar->id)->notify(new NotifyAdmin($arregloDatos));
             }
 
             DB::commit();

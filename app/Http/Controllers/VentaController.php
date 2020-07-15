@@ -16,7 +16,7 @@ class VentaController extends Controller
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
-        
+
         if ($buscar==''){
             $ventas = Venta::join('personas','ventas.idcliente','=','personas.id')
             ->join('users','ventas.idusuario','=','users.id')
@@ -34,7 +34,7 @@ class VentaController extends Controller
             ->where('ventas.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('ventas.id', 'desc')->paginate(10);
         }
-        
+
         return [
             'pagination' => [
                 'total'        => $ventas->total(),
@@ -47,7 +47,9 @@ class VentaController extends Controller
             'ventas' => $ventas
         ];
     }
-    public function obtenerCabecera(Request $request){
+
+    public function obtenerCabecera(Request $request)
+    {
         if (!$request->ajax()) return redirect('/');
 
         $id = $request->id;
@@ -58,10 +60,12 @@ class VentaController extends Controller
         'ventas.estado','personas.nombre','users.usuario')
         ->where('ventas.id','=',$id)
         ->orderBy('ventas.id', 'desc')->take(1)->get();
-        
+
         return ['venta' => $venta];
     }
-    public function obtenerDetalles(Request $request){
+    
+    public function obtenerDetalles(Request $request)
+    {
         if (!$request->ajax()) return redirect('/');
 
         $id = $request->id;
@@ -70,11 +74,12 @@ class VentaController extends Controller
         'articulos.nombre as articulo')
         ->where('detalle_ventas.idventa','=',$id)
         ->orderBy('detalle_ventas.id', 'desc')->get();
-        
+
         return ['detalles' => $detalles];
     }
-      
-    public function listarPdf(){
+
+    public function listarPdf()
+    {
         $ventas = Venta::join('personas','ventas.idcliente','=','personas.id')
             ->join('users','ventas.idusuario','=','users.id')
             ->select('ventas.id','ventas.tipo_comprobante','ventas.serie_comprobante',
@@ -87,7 +92,8 @@ class VentaController extends Controller
         return $pdf->download('ventas.pdf');
     }
 
-    public function pdf(Request $request,$id){
+    public function pdf(Request $request,$id)
+    {
         $venta = Venta::join('personas','ventas.idcliente','=','personas.id')
         ->join('users','ventas.idusuario','=','users.id')
         ->select('ventas.id','ventas.tipo_comprobante','ventas.serie_comprobante',
@@ -110,7 +116,8 @@ class VentaController extends Controller
         return $pdf->download('venta-'.$numventa[0]->num_comprobante.'.pdf');
     }
 
-    public function pdfTicket(Request $request,$id){
+    public function pdfTicket(Request $request,$id)
+    {
         $venta = Venta::join('personas','ventas.idcliente','=','personas.id')
         ->join('users','ventas.idusuario','=','users.id')
         ->select('ventas.id','ventas.tipo_comprobante','ventas.serie_comprobante',
@@ -164,9 +171,9 @@ class VentaController extends Controller
                 $detalle->idarticulo = $det['idarticulo'];
                 $detalle->cantidad = $det['cantidad'];
                 $detalle->precio = $det['precio'];
-                $detalle->descuento = $det['descuento'];         
+                $detalle->descuento = $det['descuento'];
                 $detalle->save();
-            }       
+            }
             DB::commit();
             return [
                 'id' => $venta->id

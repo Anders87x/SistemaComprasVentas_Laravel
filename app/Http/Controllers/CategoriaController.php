@@ -40,11 +40,20 @@ class CategoriaController extends Controller
         ];
     }
 
-    public function selectCategoria(Request $request){
+    public function selectCategoria(Request $request)
+    {
         if (!$request->ajax()) return redirect('/');
         $categorias = Categoria::where('condicion','=','1')
         ->select('id','nombre')->orderBy('nombre', 'asc')->get();
         return ['categorias' => $categorias];
+    }
+
+    public function listarPdf(){
+        $categorias = Categoria::select('nombre','descripcion','condicion')->orderBy('nombre', 'asc')->get();
+        $cont=Categoria::count();
+
+        $pdf = \PDF::loadView('pdf.categoriaspdf',['categorias'=>$categorias,'cont'=>$cont])->setPaper('a4', 'portrait');
+        return $pdf->download('categorias.pdf');
     }
 
     /**

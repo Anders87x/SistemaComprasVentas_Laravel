@@ -3,6 +3,7 @@
     <ol class="breadcrumb">
 
     </ol>
+
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
@@ -51,8 +52,8 @@
 </template>
 <script>
     export default {
-        props : ['ruta'],
         data (){
+
             return {
                 varIngreso:null,
                 charIngreso:null,
@@ -66,8 +67,10 @@
                 varTotalVenta:[],
                 varMesVenta:[],
             }
+            
         },
         methods : {
+
             getIngresos(){
                 let me=this;
                 var url='/dashboard';
@@ -80,6 +83,7 @@
                     console.log(error);
                 });
             },
+
             getVentas(){
                 let me=this;
                 var url='/dashboard';
@@ -92,6 +96,7 @@
                     console.log(error);
                 });
             },
+
             loadIngresos(){
                 let me=this;
                 let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -124,6 +129,7 @@
                     }
                 });
             },
+
             loadVentas(){
                 let me=this;
                 let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -157,6 +163,7 @@
                 });
             }
         },
+
         mounted() {
             this.getIngresos();
             this.getVentas();
