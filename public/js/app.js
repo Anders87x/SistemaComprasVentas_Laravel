@@ -4341,7 +4341,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -4456,6 +4455,7 @@ __webpack_require__.r(__webpack_exports__);
         q: search;
 
         me.arrayProveedor = respuesta.proveedores;
+        console.log(response.data);
         loading(false);
       })["catch"](function (error) {
         console.log(error);
@@ -50900,7 +50900,7 @@ var render = function() {
                                     [_c("i", { staticClass: "icon-eye" })]
                                   ),
                                   _vm._v(
-                                    "  \n                                    "
+                                    "  \n                                        "
                                   ),
                                   _c(
                                     "button",
@@ -50916,7 +50916,7 @@ var render = function() {
                                     [_c("i", { staticClass: "icon-doc" })]
                                   ),
                                   _vm._v(
-                                    "  \n                                    "
+                                    "  \n                                        "
                                   ),
                                   ingreso.estado == "Registrado"
                                     ? [
@@ -51601,11 +51601,11 @@ var render = function() {
                                       _vm._v(" "),
                                       _c("td", [
                                         _vm._v(
-                                          "\n                                        " +
+                                          "\n                                            " +
                                             _vm._s(
                                               detalle.precio * detalle.cantidad
                                             ) +
-                                            "\n                                    "
+                                            "\n                                        "
                                         )
                                       ])
                                     ])
@@ -51826,11 +51826,11 @@ var render = function() {
                                       _vm._v(" "),
                                       _c("td", [
                                         _vm._v(
-                                          "\n                                        " +
+                                          "\n                                            " +
                                             _vm._s(
                                               detalle.precio * detalle.cantidad
                                             ) +
-                                            "\n                                    "
+                                            "\n                                        "
                                         )
                                       ])
                                     ])
@@ -52299,7 +52299,7 @@ var staticRenderFns = [
     return _c("tr", [
       _c("td", { attrs: { colspan: "5" } }, [
         _vm._v(
-          "\n                                        NO hay artículos agregados\n                                    "
+          "\n                                            NO hay artículos agregados\n                                        "
         )
       ])
     ])
@@ -52351,7 +52351,7 @@ var staticRenderFns = [
     return _c("tr", [
       _c("td", { attrs: { colspan: "4" } }, [
         _vm._v(
-          "\n                                        NO hay artículos agregados\n                                    "
+          "\n                                            NO hay artículos agregados\n                                        "
         )
       ])
     ])
